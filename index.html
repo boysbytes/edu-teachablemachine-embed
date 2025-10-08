@@ -23,15 +23,11 @@
       <h1>Teachable Machine Classifier</h1>
       <p class="tagline">Use Teachable Machine models in your browser.</p>
     </header>
-    <main id="app" class="app">
-      <section class="panel model-panel" aria-labelledby="modelHeading">
-        <div class="panel-heading">
-          <h2 id="modelHeading">Model URL</h2>
-          <p>Paste your Teachable Machine model URL (ends with the model ID).</p>
-        </div>
 
-        <div class="model-url-row">
-          <label for="model-url" class="model-url-label">Teachable Machine Model URL</label>
+    <section class="model-section">
+      <div class="model-url-container">
+        <label for="model-url" class="model-url-label">Teachable Machine Model URL</label>
+        <div class="model-url-input-group">
           <input
             id="model-url"
             type="url"
@@ -42,11 +38,14 @@
           <button id="load-model" class="btn secondary" type="button">
             Load Model
           </button>
-          <div id="modelUrlHelp" class="hint">
-            Paste your Teachable Machine model URL. The URL should end with your model ID.
-          </div>
         </div>
+        <div id="modelUrlHelp" class="hint">
+          Paste your Teachable Machine model URL. The URL should end with your model ID.
+        </div>
+      </div>
+    </section>
 
+    <main id="app" class="app">
       <section class="panel input-panel" aria-labelledby="inputHeading">
         <div class="panel-heading">
           <h2 id="inputHeading">Input Controls</h2>
