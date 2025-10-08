@@ -84,6 +84,9 @@
       const modelURL = `${CONFIG.MODEL_URL}model.json`;
       const metadataURL = `${CONFIG.MODEL_URL}metadata.json`;
 
+      console.log(`Loading model from: ${modelURL}`);
+      console.log(`Loading metadata from: ${metadataURL}`);
+
       APP_STATE.model = await tmImage.load(modelURL, metadataURL);
       APP_STATE.maxPredictions = APP_STATE.model.getTotalClasses();
       CONFIG.MAX_PREDICTIONS = APP_STATE.maxPredictions;
@@ -98,9 +101,20 @@
       console.error("Failed to load Teachable Machine model", error);
       setLoading(false);
       disableControls();
-      renderError(
-        "Failed to load model. Please check your internet connection and try again."
-      );
+
+      // Provide more specific error messages
+      let errorMessage = "Failed to load model.";
+      if (error.message.includes('404') || error.message.includes('Not Found')) {
+        errorMessage = "Model not found. Please check that the model URL is correct and the model is publicly shared.";
+      } else if (error.message.includes('CORS') || error.message.includes('Access-Control')) {
+        errorMessage = "CORS error: The model cannot be loaded due to cross-origin restrictions. The model may not be publicly accessible.";
+      } else if (error.message.includes('Network') || error.message.includes('fetch')) {
+        errorMessage = "Network error: Please check your internet connection and try again.";
+      } else if (error.message.includes('weights')) {
+        errorMessage = "Model weights file not accessible. The model may not be properly exported or shared.";
+      }
+
+      renderError(errorMessage + " (Check browser console for details)");
       setMode("error");
     }
   }
