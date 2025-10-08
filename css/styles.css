@@ -231,6 +231,28 @@ input[type="file"]:disabled {
   object-fit: cover;
 }
 
+/* If an <img> has no src (empty), hide it so the placeholder/figcaption can be shown and centered */
+.media-container img:not([src]),
+.media-container img[src=""] {
+  display: none;
+}
+
+/* For figure containers, stack image and caption vertically and center caption when there's no image */
+figure.media-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+}
+
+figure.media-container figcaption {
+  color: rgba(240, 246, 252, 0.85);
+  font-weight: 600;
+  text-align: center;
+}
+
 .loading-indicator {
   display: flex;
   align-items: center;
