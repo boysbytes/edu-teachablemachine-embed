@@ -17,7 +17,9 @@
     webcamContainer: null,
     predictionResults: null,
     uploadedImageWrapper: null,
-    uploadedImage: null
+    uploadedImage: null,
+    modelUrlInput: null,
+    loadModelButton: null
   };
 
   let lastPredictionAt = 0;
@@ -34,6 +36,8 @@
     ui.predictionResults = document.getElementById("prediction-results");
     ui.uploadedImageWrapper = document.getElementById("uploaded-image-wrapper");
     ui.uploadedImage = document.getElementById("uploaded-image");
+    ui.modelUrlInput = document.getElementById("model-url");
+    ui.loadModelButton = document.getElementById("load-model");
   }
 
   function setMode(mode) {
@@ -76,13 +80,49 @@
   function resetMediaViews() {
     ui.webcamContainer.setAttribute("hidden", "true");
     ui.uploadedImageWrapper.setAttribute("hidden", "true");
+    if (APP_STATE.uploadObjectUrl) {
+      URL.revokeObjectURL(APP_STATE.uploadObjectUrl);
+      APP_STATE.uploadObjectUrl = null;
+      ui.uploadedImage.src = "";
+    }
   }
 
-  async function initModel() {
+  function isValidTeachableMachineUrl(url) {
+    if (!url) return false;
+
+    try {
+      const urlObj = new URL(url);
+      // Check if it's a Teachable Machine URL
+      if (!urlObj.hostname.includes('teachablemachine.withgoogle.com')) {
+        return false;
+      }
+      // Check if it has the correct path structure
+      if (!urlObj.pathname.startsWith('/models/')) {
+        return false;
+      }
+      // Ensure it ends with a model ID (not empty after /models/)
+      const pathParts = urlObj.pathname.split('/').filter(part => part.length > 0);
+      if (pathParts.length !== 2 || pathParts[0] !== 'models' || !pathParts[1]) {
+        return false;
+      }
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  async function initModel(modelUrl = null) {
     try {
       setLoading(true);
-      const modelURL = `${CONFIG.MODEL_URL}model.json`;
-      const metadataURL = `${CONFIG.MODEL_URL}metadata.json`;
+      const baseUrl = modelUrl || CONFIG.MODEL_URL;
+
+      // Validate URL format
+      if (!isValidTeachableMachineUrl(baseUrl)) {
+        throw new Error("Invalid Teachable Machine URL format. URL should be in the format: https://teachablemachine.withgoogle.com/models/YOUR_MODEL_ID/");
+      }
+
+      const modelURL = `${baseUrl}model.json`;
+      const metadataURL = `${baseUrl}metadata.json`;
 
       console.log(`Loading model from: ${modelURL}`);
       console.log(`Loading metadata from: ${metadataURL}`);
@@ -112,6 +152,8 @@
         errorMessage = "Network error: Please check your internet connection and try again.";
       } else if (error.message.includes('weights')) {
         errorMessage = "Model weights file not accessible. The model may not be properly exported or shared.";
+      } else if (error.message.includes("Invalid Teachable Machine URL")) {
+        errorMessage = error.message;
       }
 
       renderError(errorMessage + " (Check browser console for details)");
@@ -250,8 +292,6 @@
     ui.uploadedImage.src = objectUrl;
 
     ui.uploadedImage.onload = () => {
-      window.URL.revokeObjectURL(objectUrl);
-      APP_STATE.uploadObjectUrl = null;
       runImagePrediction(ui.uploadedImage);
     };
 
@@ -361,10 +401,38 @@
     }
   }
 
+  async function loadModelFromInput() {
+    const url = ui.modelUrlInput.value.trim();
+    if (!url) {
+      alert("Please enter a Teachable Machine model URL.");
+      return;
+    }
+
+    // Stop any current webcam or prediction
+    if (APP_STATE.isPredicting) {
+      stopWebcam();
+    }
+
+    // Reset the current model
+    APP_STATE.model = null;
+    disableControls();
+
+    try {
+      await initModel(url);
+      // Update the config with the new URL
+      setModelUrl(url);
+      console.log(`Model URL updated to: ${url}`);
+    } catch (error) {
+      // Error handling is already done in initModel
+      console.error("Failed to load model from input:", error);
+    }
+  }
+
   function bindEvents() {
     ui.startWebcam.addEventListener("click", setupWebcam);
     ui.stopWebcam.addEventListener("click", stopWebcam);
     ui.uploadInput.addEventListener("change", handleImageUpload);
+    ui.loadModelButton.addEventListener("click", loadModelFromInput);
     document.addEventListener("visibilitychange", handleVisibilityChange);
     window.addEventListener("beforeunload", () => {
       stopWebcam();

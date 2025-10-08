@@ -16,3 +16,8 @@ const APP_STATE = {
   currentMode: "idle",
   uploadObjectUrl: null
 };
+
+// Function to update the model URL
+function setModelUrl(url) {
+  CONFIG.MODEL_URL = url;
+}

@@ -31,6 +31,23 @@
           <p>Select webcam mode or upload an image to classify.</p>
         </div>
 
+        <div class="model-url-row">
+          <label for="model-url" class="model-url-label">Teachable Machine Model URL</label>
+          <input
+            id="model-url"
+            type="url"
+            placeholder="https://teachablemachine.withgoogle.com/models/YOUR_MODEL_ID/"
+            value="https://teachablemachine.withgoogle.com/models/YFgzqdy36/"
+            aria-describedby="modelUrlHelp"
+          />
+          <button id="load-model" class="btn secondary" type="button">
+            Load Model
+          </button>
+          <div id="modelUrlHelp" class="hint">
+            Paste your Teachable Machine model URL. The URL should end with your model ID.
+          </div>
+        </div>
+
         <div class="button-row">
           <button id="start-webcam" class="btn primary" type="button" disabled>
             Start Webcam

@@ -146,6 +146,42 @@ body.light .panel {
   gap: 8px;
 }
 
+.model-url-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 1rem;
+}
+
+.model-url-label {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.model-url-row input[type="url"] {
+  padding: 0.75rem;
+  border: 1px solid rgba(240, 246, 252, 0.3);
+  border-radius: var(--radius);
+  background-color: var(--bg-alt);
+  color: inherit;
+  font-size: 1rem;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.model-url-row input[type="url"]:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(61, 123, 253, 0.1);
+}
+
+.model-url-row .btn.secondary {
+  align-self: flex-start;
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 14px 30px rgba(107, 114, 128, 0.35);
+}
+
 .upload-label {
   font-weight: 600;
 }
