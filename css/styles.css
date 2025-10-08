@@ -321,10 +321,16 @@ input[type="file"]:disabled {
 
 /* For figure containers, stack image and caption vertically and center caption when there's no image */
 figure.media-container {
-  /* Use relative positioning so we can absolutely center the caption over the media area */
+  /* Use relative positioning and flex so it lines up with div.media-container */
   position: relative;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 0;
+  /* Reset the browser default figure margins so it lines up with other media containers */
+  margin: 0;
+  /* Ensure the figure fills the panel width like the div-based media container */
+  width: 100%;
 }
 
 /* Caption sits centered in the media box. We'll show it only when the image is absent. */
