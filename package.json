@@ -1,0 +1,15 @@
+{
+  "name": "teachable-machine-embed",
+  "version": "1.0.0",
+  "description": "Teachable Machine model deployment on Vercel",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "keywords": [
+    "teachable-machine",
+    "tensorflow",
+    "image-classification"
+  ],
+  "author": "",
+  "license": "MIT"
+}

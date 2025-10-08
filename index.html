@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Teachable Machine Webcam & Image Demo</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  </head>
+  <body>
+    <noscript>
+      <div class="noscript-warning">
+        This experience requires JavaScript to run the Teachable Machine model. Please
+        enable JavaScript in your browser settings.
+      </div>
+    </noscript>
+
+    <header class="page-header">
+      <h1>Teachable Machine Image Classifier</h1>
+      <p class="tagline">Run the YFgzqdy36 model directly in your browser.</p>
+    </header>
+
+    <main id="app" class="app">
+      <section class="panel input-panel" aria-labelledby="inputHeading">
+        <div class="panel-heading">
+          <h2 id="inputHeading">Input Controls</h2>
+          <p>Select webcam mode or upload an image to classify.</p>
+        </div>
+
+        <div class="button-row">
+          <button id="start-webcam" class="btn primary" type="button" disabled>
+            Start Webcam
+          </button>
+          <button id="stop-webcam" class="btn" type="button" disabled>
+            Stop Webcam
+          </button>
+        </div>
+
+        <div class="upload-row">
+          <label for="image-upload" class="upload-label">Upload an image</label>
+          <input
+            id="image-upload"
+            type="file"
+            accept="image/*"
+            aria-describedby="uploadHelp"
+            disabled
+          />
+          <div id="uploadHelp" class="hint">
+            Supported formats: JPEG, PNG, GIF, BMP. Max 10 MB.
+          </div>
+        </div>
+      </section>
+
+      <section class="panel visualization-panel" aria-labelledby="visualizationHeading">
+        <div class="panel-heading">
+          <h2 id="visualizationHeading">Live View</h2>
+          <p id="mode-indicator" class="mode-indicator">Waiting for model to load…</p>
+        </div>
+
+        <div id="loading-indicator" class="loading-indicator" role="status" aria-live="polite">
+          <div class="spinner"></div>
+          <span>Loading Teachable Machine model…</span>
+        </div>
+
+        <div id="webcam-container" class="media-container" hidden></div>
+        <figure id="uploaded-image-wrapper" class="media-container" hidden>
+          <img id="uploaded-image" alt="Uploaded for classification" />
+          <figcaption>Uploaded image preview</figcaption>
+        </figure>
+      </section>
+
+      <section class="panel results-panel" aria-labelledby="resultsHeading">
+        <div class="panel-heading">
+          <h2 id="resultsHeading">Predictions</h2>
+          <p>Model confidence scores update in real-time.</p>
+        </div>
+        <div id="prediction-results" class="prediction-results" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <footer class="page-footer">
+      <p>
+        Model hosted on
+        <a href="https://teachablemachine.withgoogle.com/models/YFgzqdy36/" target="_blank" rel="noreferrer">Teachable Machine</a>.
+        Built with TensorFlow.js.
+      </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.21.0/dist/tf.min.js" integrity="sha384-l2yIGK0iiankG8qfyV9E5Bbm0BHQDYHbQFYPYq8N+tY3jxQn0Aoad5T9ULIbpXsw" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js" integrity="sha384-3tYGIc4r4pSY5NxY6YjpT1JPvBDf3DVLLFhUPr3KTHKRWZ+Tvi2nqibrvau4Iv0" crossorigin="anonymous"></script>
+    <script src="js/config.js" defer></script>
+    <script src="js/model.js" defer></script>
+  </body>
+</html>
