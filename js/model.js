@@ -85,6 +85,11 @@
       APP_STATE.uploadObjectUrl = null;
       ui.uploadedImage.src = "";
     }
+
+    // remove has-image class when clearing views
+    if (ui.uploadedImageWrapper) {
+      ui.uploadedImageWrapper.classList.remove('has-image');
+    }
   }
 
   function isValidTeachableMachineUrl(url) {
@@ -293,6 +298,8 @@
 
     ui.uploadedImage.onload = () => {
       runImagePrediction(ui.uploadedImage);
+      // mark wrapper as containing an image so CSS can hide the caption
+      if (ui.uploadedImageWrapper) ui.uploadedImageWrapper.classList.add('has-image');
     };
 
     ui.uploadedImage.onerror = () => {
