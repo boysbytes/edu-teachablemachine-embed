@@ -3,7 +3,8 @@ const CONFIG = {
   WEBCAM_WIDTH: 640,
   WEBCAM_HEIGHT: 480,
   FLIP_HORIZONTAL: true,
-  CONFIDENCE_THRESHOLD: 0.1,
+  // Set to 0.0 to show all class probabilities returned by the model
+  CONFIDENCE_THRESHOLD: 0.0,
   MAX_PREDICTIONS: null
 };
 
